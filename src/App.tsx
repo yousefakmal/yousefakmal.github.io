@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { ArrowDown, ArrowUpRight, Award, Check, ChevronDown, Code2, Download, ExternalLink, Mail, MapPin, Menu, Phone, ShieldCheck, Sparkles, X } from 'lucide-react'
+import { ArrowDown, ArrowUpRight, Award, Check, ChevronDown, Code2, Download, ExternalLink, Mail, MapPin, Maximize2, Menu, Phone, ShieldCheck, Sparkles, X } from 'lucide-react'
 import { experiences, personal, projects, skillGroups, stats, training } from './data/portfolio'
 
 const nav = [['about','About'], ['experience','Experience'], ['skills','Skills'], ['projects','Projects'], ['credentials','Credentials'], ['contact','Contact']]
@@ -70,7 +70,46 @@ function Experience() { return <section className="section experience" id="exper
 
 function Skills() { return <section className="section skills" id="skills"><div className="container"><SectionIntro number="03" label="Toolkit" title="A practical, honest skill set." copy="Automation and CI/CD are clearly marked as foundational exposure; the emphasis remains on proven QA execution."/><div className="skill-legend"><span><i className="practical"/> Practical</span><span><i className="exposure"/> Basic exposure</span></div><div className="skills-grid">{skillGroups.map((g,i)=><article className="skill-card" key={g.title}><div className="skill-number">{String(i+1).padStart(2,'0')}</div><div><div className="skill-title"><h3>{g.title}</h3><span className={g.level==='Basic exposure'?'exposure':''}>{g.level}</span></div><div className="tags">{g.items.map(x=><span key={x}>{x}</span>)}</div></div></article>)}</div></div></section> }
 
-function ProjectCard({ p, i }: { p: typeof projects[number]; i: number }) { const [open,setOpen]=useState(false); return <article className={`project-card ${p.featured?'featured':''}`}><div className="project-top"><span>{String(i+1).padStart(2,'0')}</span><div className="project-status">CASE STUDY</div></div><div className="project-body"><p className="project-subtitle">{p.subtitle}</p><h3>{p.title}</h3><p>{p.summary}</p><div className="approach-row">{p.approaches.slice(0,3).map(a=><span key={a}>{a}</span>)}</div></div><div className="project-metric"><strong>{p.metric}</strong><span>Verified from CV</span></div><button className="project-toggle" onClick={()=>setOpen(!open)} aria-expanded={open}>View case details <ChevronDown className={open?'rotated':''}/></button>{open&&<div className="project-details"><ul>{p.details.map(d=><li key={d}>{d}</li>)}</ul><div className="tool-row"><strong>Tools & methods</strong>{p.tools.map(t=><span key={t}>{t}</span>)}</div><p className="link-note">Repository or live demo not supplied.</p></div>}</article> }
+function ProjectCard({ p, i }: { p: typeof projects[number]; i: number }) {
+  const [open, setOpen] = useState(false)
+  const [imageOpen, setImageOpen] = useState(false)
+
+  useEffect(() => {
+    if (!imageOpen) return
+    const closeOnEscape = (event: KeyboardEvent) => event.key === 'Escape' && setImageOpen(false)
+    document.body.style.overflow = 'hidden'
+    window.addEventListener('keydown', closeOnEscape)
+    return () => {
+      document.body.style.overflow = ''
+      window.removeEventListener('keydown', closeOnEscape)
+    }
+  }, [imageOpen])
+
+  return <>
+    <article className={`project-card ${p.featured ? 'featured' : ''}`}>
+      <div className="project-top"><span>{String(i + 1).padStart(2, '0')}</span><div className="project-status">CASE STUDY</div></div>
+      {p.image && <figure className="project-visual">
+        <button className="project-visual-button" onClick={() => setImageOpen(true)} aria-label={`Open ${p.title} graduation project infographic`}>
+          <img src={p.image} alt={p.imageAlt ?? ''} loading="lazy" />
+          <span className="project-visual-action"><Maximize2/> View infographic</span>
+        </button>
+        {p.imageCaption && <figcaption>{p.imageCaption}</figcaption>}
+      </figure>}
+      <div className="project-body"><p className="project-subtitle">{p.subtitle}</p><h3>{p.title}</h3><p>{p.summary}</p><div className="approach-row">{p.approaches.slice(0, 3).map(a => <span key={a}>{a}</span>)}</div></div>
+      <div className="project-metric"><strong>{p.metric}</strong><span>Verified from CV</span></div>
+      <button className="project-toggle" onClick={() => setOpen(!open)} aria-expanded={open}>View case details <ChevronDown className={open ? 'rotated' : ''}/></button>
+      {open && <div className="project-details"><ul>{p.details.map(d => <li key={d}>{d}</li>)}</ul><div className="tool-row"><strong>Tools & methods</strong>{p.tools.map(t => <span key={t}>{t}</span>)}</div><p className="link-note">Repository or live demo not supplied.</p></div>}
+    </article>
+    {imageOpen && p.image && <div className="image-lightbox" onMouseDown={event => event.currentTarget === event.target && setImageOpen(false)} role="presentation">
+      <section className="image-lightbox-panel" role="dialog" aria-modal="true" aria-label={`${p.title} graduation project infographic`}>
+        <button className="image-lightbox-close" onClick={() => setImageOpen(false)} aria-label="Close infographic"><X/></button>
+        <div className="image-lightbox-heading"><span>Graduation project showcase</span><strong>{p.title}</strong></div>
+        <img src={p.image} alt={p.imageAlt ?? ''} />
+        {p.imageCaption && <p>{p.imageCaption}</p>}
+      </section>
+    </div>}
+  </>
+}
 
 function Projects() { return <section className="section projects" id="projects"><div className="container"><SectionIntro number="04" label="Selected work" title="Quality, documented in outcomes." copy="Six case studies spanning ERP, web, API, database, and foundational automation testing."/><div className="projects-grid">{projects.map((p,i)=><ProjectCard p={p} i={i} key={p.title}/>)}</div></div></section> }
 

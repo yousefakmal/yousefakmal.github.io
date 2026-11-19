@@ -45,9 +45,23 @@ export const skillGroups = [
   { title: 'QA practice', level: 'Practical', items: ['JIRA', 'Chrome DevTools', 'Agile Scrum', 'STLC', 'SDLC', 'Risk-based testing'] },
 ]
 
-export const projects = [
+export type Project = {
+  title: string
+  subtitle: string
+  metric: string
+  featured?: boolean
+  summary: string
+  approaches: string[]
+  details: string[]
+  tools: string[]
+  image?: string
+  imageAlt?: string
+  imageCaption?: string
+}
+
+export const projects: Project[] = [
   { title: 'Medical ERP System', subtitle: 'Full testing cycle', metric: '70+ test cases', featured: true, summary: 'End-to-end QA across patient records, billing, inventory, and scheduling.', approaches: ['Functional', 'Regression', 'Integration', 'UAT', 'Database validation'], details: ['Led the end-to-end QA cycle against business and clinical workflow requirements.', 'Designed and executed 70+ test cases and tracked defects through resolution.', 'Verified data integrity across integrated ERP modules.'], tools: ['SQL', 'Structured bug reports'] },
-  { title: 'TEBK Web Application', subtitle: 'QA & development participation', metric: '80+ cases · 20+ defects', featured: true, summary: 'DigiLians graduation project covering multi-module web quality.', approaches: ['Functional', 'Regression', 'Smoke', 'E2E'], details: ['Participated in both development and QA/QC.', 'Conducted 80+ test cases across multiple modules.', 'Documented 20+ defects and verified fixes over multiple release iterations.'], tools: ['Web QA', 'Defect lifecycle'] },
+  { title: 'TEBK Web Application', subtitle: 'QA & development participation', metric: '80+ cases · 20+ defects', featured: true, summary: 'DigiLians graduation project covering multi-module web quality.', approaches: ['Functional', 'Regression', 'Smoke', 'E2E'], details: ['Participated in both development and QA/QC.', 'Conducted 80+ test cases across multiple modules.', 'Documented 20+ defects and verified fixes over multiple release iterations.'], tools: ['Web QA', 'Defect lifecycle'], image: '/assets/projects/tebk-graduation-project-infographic.jpeg', imageAlt: 'TEBK Healthcare Supply Chain Solution graduation project infographic showing the problem, users, architecture, QA results, tools, and deliverables', imageCaption: 'DigiLians graduation project infographic — solution overview, architecture, and QA snapshot.' },
   { title: 'Help Desk System', subtitle: 'Testing activities', metric: '60+ cases · 15+ defects', summary: 'Workflow, user-scenario, and backend data validation.', approaches: ['Functional', 'System validation', 'Database validation'], details: ['Designed and executed 60+ test cases.', 'Identified and documented 15+ defects with severity and priority.', 'Validated data integrity with SQL across 5+ core tables.'], tools: ['SQL', 'Bug reporting'] },
   { title: 'Web-Based Electronic Store', subtitle: 'End-to-end testing', metric: '100+ scenarios', featured: true, summary: 'Coverage of critical commerce journeys from authentication to checkout.', approaches: ['Exploratory', 'Usability', 'Regression', 'E2E'], details: ['Validated 8+ critical workflows including cart, product operations, and checkout.', 'Executed 100+ scenarios against business requirements.', 'Confirmed zero critical defects remained open before sign-off.'], tools: ['Web QA', 'Requirements validation'] },
   { title: 'LambdaTest & Swag Labs', subtitle: 'Manual & automation testing', metric: '50+ scenarios', summary: 'Manual and foundational automation coverage of four core modules.', approaches: ['Manual', 'UI automation', 'Reusable test design'], details: ['Covered login, inventory, product management, and checkout.', 'Developed reusable automation scripts using Selenium, TestNG, Cucumber, Maven, and POM.'], tools: ['Selenium', 'TestNG', 'Cucumber', 'Maven', 'POM'] },
